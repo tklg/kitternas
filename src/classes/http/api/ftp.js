@@ -20,7 +20,7 @@ function bindWS (server) {
         const greeting = await client.connect(user[0].username, token)
         clients.set(user[0].id, { client, socket })
         sid = user[0].id
-        Log.d(TAG, 'connected ' + user[0].username)
+        // Log.d(TAG, 'connected ' + user[0].username)
         cb({
           status: 'ok',
           data: greeting
@@ -33,6 +33,7 @@ function bindWS (server) {
     })
 
     socket.on('client.command',  async ({ cmd, params }, cb) => {
+      if (sid === undefined) return socket.disconnect()
       try {
         const cl = client.getClient()
         const res = await cl[cmd](...params)
@@ -52,7 +53,7 @@ function bindWS (server) {
       try {
         client.destroy()
         clients.delete(sid)
-        Log.d(TAG, 'disconnect ' + sid)
+        // Log.d(TAG, 'disconnect ' + sid)
       } catch (e) {
         Log.e(TAG, e)
       }

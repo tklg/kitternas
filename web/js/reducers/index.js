@@ -22,6 +22,12 @@ const reducer = (state = {}, action) => {
       return {
         ...addStateArrayValue(state, data)
       }
+    case Actions.set_dir_content:
+      let directories = { ...state.directories }
+      directories[data.path] = data.files
+      return {
+        directories: directories
+      }
   }
 }
 

@@ -12,7 +12,7 @@ function getHeaderHref (a, i) {
 }
 
 export default props => {
-  const path = props.path.reduce((a, x) => {
+  let path = props.path.reduce((a, x) => {
     // if (!/^\d+$/.test(a[a.length - 1])) a.push(x)
     a.push(x)
     return a
@@ -23,7 +23,9 @@ export default props => {
     }
   }).map((p, i) => {
     return <NavLink to={p.href} key={`a-${i}`}>{p.text}</NavLink>
-  }).reduce((r, e, i, a) => {
+  })
+  path.unshift(<NavLink to={'/'} key={'a'}>{'My files'}</NavLink>)
+  path = path.reduce((r, e, i, a) => {
     r.push(e)
     if (i < a.length - 1) r.push(<span key={`span-${i}`}> / </span>)
     return r

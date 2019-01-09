@@ -10,6 +10,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity .3s $transition;
+  z-index: 100;
 
   .modal {
     background: $background-3;

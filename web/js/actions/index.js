@@ -14,18 +14,39 @@ const ACTIONS = {
   clear_error: 'clear_error',
   set_state_key: 'set_state_key',
   add_state_array_value: 'add_state_array_value',
-  remove_state_array_value: 'remove_state_array_value'
+  remove_state_array_value: 'remove_state_array_value',
+  set_dir_content: 'set_dir_content'
 }
 
 export default ACTIONS
 
 export const subscribeSocket = (dispatch, token) => {
   socket = io.connect(SURL)
+  const u = uuid()
+  dispatch(setWorking(u, 'add'))
   socket.emit('client.connect', { token }, res => {
     console.log(res)
-    socket.emit('client.command', { cmd: 'list', params: [] }, res => {
-      console.log(res)
-    })
+    if (res.error) {
+      return dispatch(setError(res.error))
+    } else {
+      dispatch(ftpList('/'))
+    }
+    dispatch(setWorking(u, 'remove'))
+  })
+}
+
+const preventListSpam = new Map()
+export const ftpList = (dir) => (dispatch, getState) => {
+  if (preventListSpam.has(dir)) return
+  preventListSpam.set(dir, true)
+  const u = uuid()
+  dispatch(setWorking(u, 'add'))
+  socket.emit('client.command', { cmd: 'list', params: [dir] }, res => {
+    if (res.error) return dispatch(setError(res.error))
+    console.log(res)
+    dispatch(setDirectoryContent(dir, res.data))
+    dispatch(setWorking(u, 'remove'))
+    preventListSpam.delete(dir)
   })
 }
 
@@ -121,4 +142,9 @@ export const setError = data => ({
 
 export const clearError = () => ({
   type: ACTIONS.clear_error
+})
+
+export const setDirectoryContent = (path, files) => ({
+  type: ACTIONS.set_dir_content,
+  data: { path, files }
 })

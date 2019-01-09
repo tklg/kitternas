@@ -28,7 +28,7 @@ module.exports = class HttpServer {
       res.sendFile(nodePath.join(__dirname, 'public/login.html'))
     })
 
-    app.get(/.*[^.]$/, (req, res) => {
+    app.get(/.*/, (req, res) => {
       res.sendFile(nodePath.join(__dirname, 'public/index.html'))
     })
 

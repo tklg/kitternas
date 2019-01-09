@@ -1,0 +1,61 @@
+@import '../../scss/vars';
+
+.file-manager {
+  .directory-container {
+    .directory {
+      header {
+        border-bottom: 1px solid $accent-1;
+        height: 50px;
+        line-height: 50px;
+        color: $text-light-1;
+        padding: 0 14px;
+      }
+      .files {
+        outline: none;
+
+        $fileheight: 42px;
+        .file {
+          height: $fileheight;
+          color: $text-light-2;
+          padding: 0 14px;
+          border-bottom: 1px solid $white-5;
+          cursor: pointer;
+          user-select: none;
+
+          &:last-of-type {
+            border-bottom: none;
+          }
+          &:hover {
+            background: $white-5;
+          }
+          .stack {
+            height: $fileheight;
+            padding: 5px 0;
+            font-size: 0;
+
+            span {
+              display: inline-block;
+              width: 100%;
+              height: ($fileheight - 10px) / 2;
+
+              &.name {
+                font-size: .9rem;
+              }
+              &.permissions {
+                font-size: .85rem;
+                color: $text-light-3;
+                font-family: monospace;
+              }
+              &.size,
+              &.date {
+                font-size: .85rem;
+                color: $text-light-3;
+                text-align: right;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

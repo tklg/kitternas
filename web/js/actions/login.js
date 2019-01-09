@@ -48,7 +48,7 @@ export const clearError = () => ({
 
 export const setLoggedIn = (data) => (dispatch, getState) => {
   window.localStorage.setItem('kitternas_token', JSON.stringify(data))
-  window.location.href = '/'
+  window.location.href = '/browse'
 }
 
 export const checkEmail = email => async (dispatch, getState) => {
