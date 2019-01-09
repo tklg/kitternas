@@ -17,6 +17,8 @@
     border-radius: 3px;
     box-shadow: $shadow-2;
     min-width: 300px;
+    margin-top: 60px;
+    transition: margin-top .3s $transition;
 
     header {
       line-height: 30px;
@@ -38,5 +40,9 @@
   &.active {
     opacity: 1;
     pointer-events: all;
+
+    .modal {
+      margin-top: 0;
+    }
   }
 }

@@ -8,6 +8,7 @@ function generateString (level, tag, msg) {
     tag = '?'
   }
   if (msg instanceof Error && msg.stack) msg = msg.stack
+  try { msg = stringify(msg, null, 2) } catch (e) {}
   return `[${chalk.magentaBright((new Date()).toISOString())}] ${color(`${level}/${tag}`)}: ${msg.toString()}`
 }
 
@@ -24,6 +25,19 @@ class Log {
   static i (tag, msg) {
     console.info(generateString('I', tag, msg))
   }
+}
+
+function stringify(str, html) {
+  const cache = []
+  return JSON.stringify(str, function(key, value) {
+    if (typeof value === 'object' && value !== null) {
+      if (cache.indexOf(value) !== -1) {
+        return '[Circular]'
+      }
+      cache.push(value)
+    }
+    return value
+  }, 2)
 }
 
 module.exports = Log

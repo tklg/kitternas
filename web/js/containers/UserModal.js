@@ -1,5 +1,6 @@
 import React from 'react'
 import UnderlineInput from '../components/UnderlineInput'
+import { setStateValue, saveUser } from '../actions'
 import './modal.scss'
 
 export default class UserModal extends React.Component {
@@ -12,11 +13,17 @@ export default class UserModal extends React.Component {
       password_current: ''
     }
     this.onChange = this.onChange.bind(this)
+    this.submit = this.submit.bind(this)
   }
   componentDidUpdate (prevProps, prevState) {
     if (this.props.active && !prevProps.active) {
       this.setState({
         ...this.props.user
+      })
+    } else if (!this.props.active && prevProps.active) {
+      this.setState({
+        password: '',
+        password_current: ''
       })
     }
   }
@@ -25,10 +32,17 @@ export default class UserModal extends React.Component {
       [key]: e.target.value
     })
   }
+  submit () {
+    this.props.dispatch(saveUser(this.state))
+    this.setState({
+      password: '',
+      password_current: ''
+    })
+  }
   render () {
     return (
-      <div className={'flex flex-container flex-center modal-container' + (this.props.active ? ' active' : '')}>
-        <div className='modal flex-container flex-vertical'>
+      <div className={'flex flex-container flex-center modal-container' + (this.props.active ? ' active' : '')} onClick={() => this.props.dispatch(setStateValue('userModal', false))}>
+        <div className='modal flex-container flex-vertical' onClick={e => e.stopPropagation()}>
           <header>
             <h1>User settings</h1>
           </header>
@@ -42,6 +56,7 @@ export default class UserModal extends React.Component {
               type='text'
               placeholder='Email'
               value={this.state.email}
+              pattern={/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/}
               onChange={e => this.onChange('email', e)} />
             <UnderlineInput
               type='password'
@@ -56,7 +71,7 @@ export default class UserModal extends React.Component {
           </div>
           <footer>
             <div className='buttons'>
-              <button className='btn btn-clear'>Save</button>
+              <button className='btn btn-clear' onClick={() => this.submit()}>Save</button>
             </div>
           </footer>
         </div>

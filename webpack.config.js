@@ -61,7 +61,8 @@ module.exports = (env, argv) => {
     ],
     devServer: {
       historyApiFallback: true,
-      disableHostCheck: true
+      disableHostCheck: true,
+      port: 8081
     }
   }
 }

@@ -48,6 +48,7 @@ class LoginApp extends React.Component {
         type='text'
         name='email'
         placeholder='Email'
+        pattern={/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/}
         onChange={e => this.dispatch(setEmail(e.target.value))}
         value={this.state.user.email} />
     ]

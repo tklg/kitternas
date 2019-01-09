@@ -2,17 +2,17 @@ const dbp = require('../db')
 const bcrypt = require('bcrypt')
 
 module.exports = class User {
-  constructor (opts) {
+  constructor (opts, nofetch) {
     this.id = -1
     this.username = opts.username
     this.password = opts.password
-    this.hashedPassword = null
+    this.hashedPassword = opts.password
     this.email = opts.email
     for (const key in opts) {
       this[key] = opts[key]
     }
-    this._dbfetched = false
-    if (this.username || this.email) {
+    this._dbfetched = nofetch || false
+    if (!nofetch && (this.username || this.email)) {
       this.fetchFromDB().catch(e => {
         
       })
@@ -48,7 +48,7 @@ module.exports = class User {
     const db = await dbp
     let lastID
     if (this.id !== -1) {
-      await db.run('UPDATE users SET email = ?, username = ?, password = ? WHERE id = ? LIMIT 1', [this.email, this.username, this.hashedPassword, this.id])
+      await db.run('UPDATE users SET email = ?, username = ?, password = ? WHERE id = ?', [this.email, this.username, this.hashedPassword, this.id])
     } else {
       { lastID } await db.run('INSERT INTO users (email, username, password) VALUES (?, ?, ?)', [this.email, this.username, this.hashedPassword])
     }
@@ -58,8 +58,18 @@ module.exports = class User {
     const db = await dbp
     const str = Object.keys(obj).map(x => `${x} = ?`).join(' AND ')
     const params = Object.values(obj)
-    const user = await db.get(`SELECT * FROM users WHERE ${str} LIMIT 1`, params)
-    if (user) return new User(user)
-    else return null
+    const user = await db.get(`SELECT * FROM users WHERE ${str}`, params)
+    if (user) {
+      if (user instanceof Array) return user.map(u => new User(u, true))
+      else return [new User(user, true)]
+    } else return null
+  }
+  static async all () {
+    const db = await dbp
+    const users = await db.get(`SELECT * FROM users`)
+    if (users) {
+      if (users instanceof Array) return users.map(u => new User(u, true))
+      else return [new User(users, true)]
+    } else return []
   }
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import DispatchComponent from './DispatchComponent'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { initAjax, load } from './actions'
 import Progress from './components/Progress'
 import Filemanager from './containers/Filemanager'
 import UserModal from './containers/UserModal'
@@ -17,12 +18,16 @@ class App extends DispatchComponent {
       userModal: false
     }
   }
+  componentDidMount () {
+    this.dispatch(initAjax())
+    this.dispatch(load())
+  }
   render () {
     return (
       <Router>
         <div className='root-container flex-container'>
           <Progress working={this.state.working.length} />
-          <UserModal active={this.state.userModal} user={this.state.user} />
+          <UserModal active={this.state.userModal} user={this.state.user} dispatch={this.dispatch} />
           <Route exact path='*' 
             render={({match}) => {
               return <Filemanager path={match.url.substr(1).split('/')} dispatch={this.dispatch} />
