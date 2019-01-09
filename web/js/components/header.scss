@@ -1,0 +1,19 @@
+@import '../../scss/vars';
+
+.fm-header {
+  height: 50px;
+  line-height: 50px;
+  color: $text-light-1;
+  background: $background-2;
+  box-shadow: $shadow-1;
+
+  h1 {
+    font-weight: lighter;
+    font-size: 18px;
+    padding: 0 14px;
+    letter-spacing: 1px;
+  }
+  .buttons {
+    padding: 5px;
+  }
+}

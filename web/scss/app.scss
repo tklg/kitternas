@@ -1,0 +1,134 @@
+@import 'vars';
+
+html,
+body,
+#root,
+.root-container {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: $background-1;
+  font-family: sans-serif;
+  color: $text-dark-1;
+}
+
+.root-container {
+  overflow: hidden;
+}
+
+main {
+  overflow: hidden;
+  overflow-y: auto;
+  position: relative;
+}
+
+.hidden {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: $white-4;
+}
+::-webkit-scrollbar-thumb {
+  width: 8px;
+  background: $white-3;
+  border-radius: 4px;
+}
+
+* {
+  box-sizing: border-box !important;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+.flex-container {
+  display: flex;
+
+  &.flex-center {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  &.flex-horizintal {
+    flex-direction: row;
+  }
+  &.flex-vertical {
+    flex-direction: column;
+  }
+  &.flex-fill {
+    width: 100%;
+  }
+  .flex {
+    display: inline-block;
+    flex: 1;
+
+    &.flex-container {
+      display: inline-flex;
+    }
+  }
+  .flex-none {
+    flex: none;
+  }
+}
+
+.btn {
+  position: relative;
+  height: 36px;
+  padding: 0 20px;
+  background: $accent-1;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  box-shadow: $shadow-1;
+  transition: box-shadow .15s ease-in-out;
+  cursor: pointer;
+  user-select: none;
+
+  &:focus{
+    outline: initial;
+  }
+  &:hover {
+    box-shadow: $shadow-3;
+  }
+  &:active {
+    box-shadow: $shadow-2;
+  }
+  &:disabled {
+    background: $black-5;
+    color: $black-3;
+    pointer-events: none;
+  }
+  &.btn-with-icon {
+    padding: 0 20px 0 0;
+
+    i {
+      font-size: 1.5em;
+      height: 30px;
+      width: 30px;
+      vertical-align: middle;
+      margin: 0 10px;
+    }
+  }
+  &.btn-clear {
+    background: transparent;
+    color: $accent-1;
+    box-shadow: none;
+    border: transparent;
+
+    &:hover {
+      box-shadow: $shadow-2;
+    }
+  }
+  & + .btn {
+    margin-left: 6px;
+  }
+}
