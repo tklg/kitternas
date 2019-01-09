@@ -4,7 +4,7 @@ import DispatchComponent from './DispatchComponent'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { initAjax, load } from './actions'
 import Progress from './components/Progress'
-import Filemanager from './containers/Filemanager'
+import FtpClient from './containers/FtpClient'
 import UserModal from './containers/UserModal'
 import '../scss/app.scss'
 
@@ -15,7 +15,8 @@ class App extends DispatchComponent {
       working: [],
       error: null,
       user: null,
-      userModal: false
+      userModal: false,
+      token: null
     }
   }
   componentDidMount () {
@@ -30,7 +31,11 @@ class App extends DispatchComponent {
           <UserModal active={this.state.userModal} user={this.state.user} dispatch={this.dispatch} />
           <Route exact path='*' 
             render={({match}) => {
-              return <Filemanager path={match.url.substr(1).split('/')} dispatch={this.dispatch} />
+              return <FtpClient
+                path={match.url.substr(1).split('/')} 
+                dispatch={this.dispatch}
+                user={this.state.user}
+                token={this.state.token} />
             }} />
         </div>
       </Router>

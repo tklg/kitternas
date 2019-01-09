@@ -9,7 +9,9 @@ require('./classes/GlobalRequire')({
 const FtpServer = require('./classes/FtpServer')
 const HttpServer = require('./classes/http')
 
-const ftpServer = new FtpServer({ /* options */ })
+const ftpServer = new FtpServer({
+  greeting: 'Connected to KitterNAS'
+})
 const httpServer = new HttpServer()
 
 ftpServer.listen()

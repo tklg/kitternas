@@ -1,8 +1,11 @@
 import Ajax from '../lib/Ajax'
 import uuid from 'uuid/v4'
+import io from 'socket.io-client'
 
 let URL = `${window.location.origin}/api`
 if (window.location.origin.indexOf('localhost') > -1) URL = 'http://localhost:8080/api'
+const SURL = URL + '/ftpws'
+let socket
 
 const ACTIONS = {
   set_working: 'set_working',
@@ -16,6 +19,16 @@ const ACTIONS = {
 
 export default ACTIONS
 
+export const subscribeSocket = (dispatch, token) => {
+  socket = io.connect(SURL)
+  socket.emit('client.connect', { token }, res => {
+    console.log(res)
+    socket.emit('client.command', { cmd: 'list', params: [] }, res => {
+      console.log(res)
+    })
+  })
+}
+
 export const initAjax = data => (dispatch, getState) => {
   const tokens = window.localStorage.getItem('kitternas_token')
   if (!tokens) {
@@ -26,10 +39,12 @@ export const initAjax = data => (dispatch, getState) => {
     ...JSON.parse(tokens),
     refresh_url: URL + '/user/token'
   })
+  dispatch(setStateValue('token', JSON.parse(tokens)))
   Ajax.onRefresh((data) => {
     try {
       const tokens = JSON.parse(data)
       window.localStorage.setItem('kitternas_token', JSON.stringify(data))
+      dispatch(setStateValue('token', tokens))
     } catch (e) {
       dispatch(setError(e))
     }

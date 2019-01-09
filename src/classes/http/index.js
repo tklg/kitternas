@@ -22,7 +22,7 @@ module.exports = class HttpServer {
 
     app.use('/', express.static(nodePath.join(__dirname, '/public')))
 
-    app.use('/api', api)
+    app.use('/api', api(server))
 
     app.get('/login', (req, res) => {
       res.sendFile(nodePath.join(__dirname, 'public/login.html'))

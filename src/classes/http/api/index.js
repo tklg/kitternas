@@ -4,9 +4,9 @@ const TAG = 'api'
 
 const authEndpoint = require('./auth')
 const userEndpoint = require('./user')
+const ftpEndpoint = require('./ftp')
 
-router.use('/auth', authEndpoint())
-router.use('/user', userEndpoint(async (req, res, next) => {
+async function authorizationMiddleware (req, res, next) {
   if (req.method.toLowerCase() === 'options') return next()
   const tokStr = req.header('authorization')
   if (!tokStr) return res.status(403).json({
@@ -26,6 +26,12 @@ router.use('/user', userEndpoint(async (req, res, next) => {
       error: 'could not find user'
     })
   }
-}))
+}
 
-module.exports = router
+
+module.exports = server => {
+  router.use('/auth', authEndpoint())
+  router.use('/user', userEndpoint(authorizationMiddleware))
+  router.use('/ftp', ftpEndpoint(authorizationMiddleware, server))
+  return router
+}
