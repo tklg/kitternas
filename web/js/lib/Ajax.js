@@ -79,7 +79,7 @@ export default class Ajax {
         if (!('' + xhr.status).startsWith('2')) { return xhr.onerror() }
         var data = xhr.response
         try {
-          data = JSON.parse(data)
+          if (typeof data === 'string') data = JSON.parse(data)
         } catch (e) {}
         resolve({
           data,
@@ -113,6 +113,7 @@ export default class Ajax {
         }
       }
 
+      xhr.responseType = opts.responseType || 'text'
       xhr.open(opts.method || 'GET', opts.url + qs || window.location.href)
       if (opts.headers) {
         for (let key in opts.headers) xhr.setRequestHeader(key, opts.headers[key])

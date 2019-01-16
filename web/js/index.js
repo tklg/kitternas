@@ -6,6 +6,10 @@ import { initAjax, load } from './actions'
 import Progress from './components/Progress'
 import FtpClient from './containers/FtpClient'
 import UserModal from './containers/UserModal'
+import ConfirmationModal from './containers/ConfirmationModal'
+import ContextMenu from './containers/ContextMenu'
+import UploadQueue from './renderless/UploadQueue'
+import ErrorContainer from './components/ErrorContainer'
 import '../scss/app.scss'
 
 class App extends DispatchComponent {
@@ -16,10 +20,12 @@ class App extends DispatchComponent {
       error: null,
       user: null,
       userModal: false,
+      confirmationModal: null,
+      contextMenu: null,
       token: null,
-      directories: {
-        '/': []
-      }
+      directories: { '/': [] },
+      previews: {},
+      uploadQueue: []
     }
   }
   componentDidMount () {
@@ -31,17 +37,22 @@ class App extends DispatchComponent {
       <Router basename='/browse'>
         <div className='root-container flex-container'>
           <Progress working={this.state.working.length} />
+          <ErrorContainer error={this.state.error} dispatch={this.dispatch} />
           <UserModal active={this.state.userModal} user={this.state.user} dispatch={this.dispatch} />
+          <ConfirmationModal content={this.state.confirmationModal} dispatch={this.dispatch} />
+          <ContextMenu {...this.state.contextMenu} dispatch={this.dispatch} />
+          <UploadQueue queue={this.state.uploadQueue} concurrent={2} dispatch={this.dispatch} />
           <Switch>
             {/*<Route exact path='/' render={() => <Redirect to='/browse' />} />*/}
             <Route exact path='*' 
               render={({match}) => {
                 return <FtpClient
-                  path={match.url.substr(1).split('/').filter(x => x.length > 0)} 
+                  path={match.url.substr(1).split('/').filter(x => x.length > 0).map(x => decodeURIComponent(x))} 
                   dispatch={this.dispatch}
                   user={this.state.user}
                   token={this.state.token}
-                  directories={this.state.directories} />
+                  directories={this.state.directories}
+                  previews={this.state.previews} />
               }} />
             </Switch>
         </div>
@@ -50,4 +61,5 @@ class App extends DispatchComponent {
   }
 }
 
+if (window.location.pathname === '/') window.location.href = '/browse'
 ReactDOM.render(<App />, document.getElementById('root'))

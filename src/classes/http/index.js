@@ -1,5 +1,6 @@
 const express = require('express')
-const bodyParser = require('body-parser')
+const busboy = require('express-busboy')
+const cookieParser = require('cookie-parser')
 const api = require('./api')
 const TAG = 'HttpServer'
 
@@ -15,9 +16,12 @@ module.exports = class HttpServer {
   constructor () {
     const app = express()
     const server = require('http').Server(app)
+    busboy.extend(app, {
+      upload: true,
+      allowedPath: /api\/ftp\/upload/
+    })
 
-    app.use(bodyParser.urlencoded({ extended: true }))
-    app.use(bodyParser.json())
+    app.use(cookieParser())
     app.use(allowCrossDomain)
 
     app.use('/', express.static(nodePath.join(__dirname, '/public')))

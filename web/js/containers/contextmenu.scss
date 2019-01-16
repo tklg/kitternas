@@ -1,0 +1,67 @@
+@import '../../scss/vars';
+
+.contextmenu-container {
+  position: absolute;
+  width: 200px;
+  line-height: 40px;
+  max-height: 0;
+  pointer-events: none;
+  overflow: hidden;
+  box-shadow: none;
+  opacity: 0;
+  background: $background-3;
+  list-style: none;
+  margin: 0;
+  z-index: 300;
+  color: $text-light-1;
+  transition: .15s max-height $transition,
+              .15s padding $transition,
+              .15s box-shadow $transition,
+              .15s opacity $transition,
+              .1s color $transition;
+
+  li {
+    display: inline-block;
+    height: 40px;
+    width: 100%;
+    padding: 0 10px 0 6px;
+    border-bottom: 1px solid $black-5;
+    cursor: pointer;
+    font-size: .9rem;
+
+    &:last-of-type {
+      border: none;
+    }
+    &:hover {
+      background: $white-5;
+      box-shadow: $shadow-1;
+    }
+    div {
+      display: inline-block;
+      height: 40px;
+      width: 100%;
+
+      path {
+        fill: $text-light-3;
+      }
+      span {
+        vertical-align: middle;
+        height: 40px;
+      }
+    }
+  }
+  hr {
+    border: none;
+    height: 1px;
+    background: $accent-2;
+  }
+  &.active {
+    max-height: 80vh;
+    overflow: auto;
+    pointer-events: all;
+    opacity: 1;
+    box-shadow: $shadow-2;
+    color: $text-light-2;
+    padding: 10px 0;
+  }
+}

@@ -1,42 +1,90 @@
 @import '../../scss/vars';
 
 .file-manager {
+  width: 100%;
+  
   .directory-container {
+    
     .directory {
+      overflow: hidden;
+
       header {
         border-bottom: 1px solid $accent-1;
         height: 50px;
+        min-height: 50px;
         line-height: 50px;
-        color: $text-light-1;
         padding: 0 14px;
+
+        a {
+          display: inline-block;
+          text-decoration: none;
+          color: $text-light-1;
+        }
+        span {
+          color: $text-light-1;
+          @include ellip();
+
+          &.count {
+            color: $text-light-3;
+            margin-left: 14px;
+            font-size: 0.8rem;
+          }
+        }
+        .buttons {
+          padding: 5px 0;
+
+          .icon {
+            height: 30px;
+            width: 30px;
+            margin: 5px;
+            padding: 2px;
+
+            svg {
+              height: 26px;
+              width: 26px;
+            }
+            path {
+              fill: $text-light-3;
+            }
+          }
+        }
       }
       .files {
         outline: none;
 
         $fileheight: 42px;
         .file {
+          position: relative;
           height: $fileheight;
           color: $text-light-2;
           padding: 0 14px;
           border-bottom: 1px solid $white-5;
           cursor: pointer;
           user-select: none;
+          text-decoration: none;
 
           &:last-of-type {
             border-bottom: none;
           }
-          &:hover {
+          &:hover:not(.active) {
             background: $white-5;
           }
+          &.active {
+            background: $white-4;
+          }
           .stack {
-            height: $fileheight;
-            padding: 5px 0;
+            height: #{$fileheight / 2};
+            padding: 5px 0 0 0;
             font-size: 0;
-
+            width: 100%;
+            
+            &:last-of-type {
+              padding: 0 0 5px 0;
+            }
             span {
               display: inline-block;
-              width: 100%;
               height: ($fileheight - 10px) / 2;
+              @include ellip();
 
               &.name {
                 font-size: .9rem;
@@ -48,13 +96,83 @@
               }
               &.size,
               &.date {
+                min-width: 120px;
                 font-size: .85rem;
                 color: $text-light-3;
                 text-align: right;
               }
             }
           }
+          &.folder {
+            &:after {
+              content: '›';
+              position: absolute;
+              top: 0;
+              right: 2px;
+              line-height: $fileheight;
+              color: $text-light-4;
+            }
+          }
         }
+      }
+      &.preview {
+        .viewport {
+          position: relative;
+          text-align: center;
+
+          .media {
+            max-width: calc(100% - 24px);
+            max-height: calc(100% - 24px);
+            width: auto;
+            margin: auto;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 12px;
+            box-shadow: $shadow-2;
+          }
+          audio {
+            display: inline-block;
+            margin: 12px auto;
+            width: 300px;
+            box-shadow: $shadow-2;
+          }
+          .full {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+          }
+          .nopreview {
+            height: 100%;
+            width: 100%;
+
+            span {
+              display: inline-block;
+              font-size: 100px;
+              text-shadow: 4px 4px 8px $black-3;
+              color: $text-light-3;
+            }
+          }
+          textarea {
+            background: $background-2;
+            color: $text-light-2;
+            padding: 14px;
+            resize: none;
+            border: none;
+            outline: none;
+          }
+        }
+      }
+      &.position-0 {
+        max-width: 0;
+
+        &:nth-last-of-type(2) {
+          max-width: 33%;
+        }
+      }
+      &.position-1 {
+        background: $background-1;
+        box-shadow: $shadow-3;
       }
     }
   }

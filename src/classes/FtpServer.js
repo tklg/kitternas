@@ -1,5 +1,6 @@
 const { FtpSrv, FileSystem } = require('ftp-srv')
 const bunyan = require('bunyan') // required from ftp-srv
+const os = require('os')
 const TAG = 'FtpServer'
 
 module.exports = class FtpServer {
@@ -31,10 +32,13 @@ module.exports = class FtpServer {
           }
         }
         if (valid) {
-          const rootPath = process.cwd()
+          const rootPath = nodePath.parse(process.cwd()).root
+          const homePath = os.homedir()
+          // Log.d(TAG, rootPath)
+          // Log.d(TAG, homePath)
           const fs = new FileSystem(connection, {
             root: rootPath,
-            cwd: undefined
+            cwd: rootPath
           })
           const blacklist = []
           const whitelist = undefined

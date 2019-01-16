@@ -7,7 +7,7 @@ function getHeaderText (str, props) {
 }
 
 function getHeaderHref (a, i) {
-  const str = a.length ? '/' + a.filter((x, _i) => _i <= i).join('/').toLowerCase() : '/'
+  const str = a.length ? '/' + a.filter((x, _i) => _i <= i).join('/') : '/'
   return str
 }
 

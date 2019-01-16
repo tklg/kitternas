@@ -10,7 +10,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity .3s $transition;
-  z-index: 100;
+  z-index: 1000;
 
   .modal {
     background: $background-3;
@@ -26,13 +26,21 @@
       margin-bottom: 20px;
 
       h1 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         color: $text-light-1;
       }
     }
-    footer {
-      margin-top: 20px;
+    .modal-body {
+      margin-bottom: 20px;
 
+      .underlined-input {
+        margin-top: 0;
+      }
+    }
+    .underlined-input {
+      margin-top: -30px;
+    }
+    footer {
       .buttons {
         text-align: right;
       }
