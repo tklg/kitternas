@@ -2,3 +2,5 @@ token.json
 node_modules
 shrinkwrap.yaml
 db/db.sqlite
+src/public/*
+!src/public/.gitkeep
