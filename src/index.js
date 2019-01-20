@@ -1,11 +1,12 @@
 require('./classes/GlobalRequire')({
-  Log: './classes/Logger',
   nodePath: 'path',
   User: './classes/auth/User',
   AccessToken: './classes/auth/AccessToken',
   RefreshToken: './classes/auth/RefreshToken',
-  CFile: '../config.json'
+  Log: './classes/Logger',
+  Config: './classes/Config'
 })
+
 const FtpServer = require('./classes/FtpServer')
 const HttpServer = require('./classes/http')
 
@@ -18,5 +19,5 @@ ftpServer.listen()
 httpServer.listen()
 
 process.on('exit', () => {
-  Log.i('Exiting...')
+  Log.i('KitterNAS', 'Exiting...')
 })

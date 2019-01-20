@@ -23,17 +23,16 @@ module.exports = class HttpServer {
 
     app.use(cookieParser())
     app.use(allowCrossDomain)
-
-    app.use('/', express.static(nodePath.join(__dirname, '/public')))
+    app.use('/', express.static(nodePath.join(__dirname, '../../', '/public')))
 
     app.use('/api', api(server))
 
     app.get('/login', (req, res) => {
-      res.sendFile(nodePath.join(__dirname, 'public/login.html'))
+      res.sendFile(nodePath.join(__dirname, '../../', 'public/login.html'))
     })
 
     app.get(/.*/, (req, res) => {
-      res.sendFile(nodePath.join(__dirname, 'public/index.html'))
+      res.sendFile(nodePath.join(__dirname, '../../', 'public/index.html'))
     })
 
     app.use('*', (req, res) => {
@@ -46,8 +45,8 @@ module.exports = class HttpServer {
     this.server = server
   }
   async listen () {
-    this.server.listen(CFile.web_port, () => {
-      Log.d(TAG, `Express running on ${CFile.web_base}:${CFile.web_port}`)
+    this.server.listen(Config.port, () => {
+      Log.d(TAG, `Express running on ${Config.hostname}:${Config.port}`)
     })
   }
 }
